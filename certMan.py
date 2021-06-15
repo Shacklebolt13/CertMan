@@ -7,14 +7,16 @@ import smtplib,ssl,sys
 import locMan 
 
 
-eventSm="xyz"
-event="xyz Competion"
-filedir="certs/"
+eventSm="xyz"   #for files
+event="xyz Competion"   #for mail
+filedir="certs/" 
+makePdf=True
 
 msg=f"Thank You For Participating in {event}. Please find your certificate attatched to this mail."
 
-context = ssl.create_default_context()
+
 if("-d" not in sys.argv):
+    context = ssl.create_default_context()
     sender=sys.argv[1]
     password=sys.argv[2]
     server=smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) 
@@ -23,7 +25,8 @@ else:
     sender="Test"
     server=smtplib.SMTP("localhost",port=1025)
 #syntax: python3 ownAuto.py <gmail> <pass> [options]
-#-v verbose
+# -v verbose
+# -d debug smtp server
 #-c custom input
 #-n no attatch file
     
@@ -61,7 +64,9 @@ def maillto(address,filename,name):
 
 
 def createPdf(name):
-    return locMan.saveCert(name)
+    debugMode=True if("-v" in sys.argv ) else False
+    
+    return locMan.saveCert(name,debug=debugMode,pdf=makePdf)
 
 def attachMsg(name,address):
 
