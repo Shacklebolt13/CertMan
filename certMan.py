@@ -6,14 +6,14 @@ import pandas as pd
 import smtplib,ssl,sys
 import locMan 
 
-
+#----------------- TO CUSTOMIZE-------------------
 eventSm="xyz"   #for files
 event="xyz Competion"   #for mail
 filedir="certs/" 
 makePdf=True
-
 msg=f"Thank You For Participating in {event}. Please find your certificate attatched to this mail."
-
+debugServerPort=1025
+#--------------------------------------------------
 
 if("-d" not in sys.argv):
     context = ssl.create_default_context()
@@ -23,7 +23,7 @@ if("-d" not in sys.argv):
     server.login(sender, password)
 else:
     sender="Test"
-    server=smtplib.SMTP("localhost",port=1025)
+    server=smtplib.SMTP("localhost",port=debugServerPort)
 #syntax: python3 ownAuto.py <gmail> <pass> [options]
 # -v verbose
 # -d debug smtp server
