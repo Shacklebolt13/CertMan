@@ -4,21 +4,23 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import pandas as pd
 import smtplib,ssl,sys
-from . import locMan 
+import locMan 
 
 
 eventSm="xyz"
 event="xyz Competion"
 filedir="certs/"
-sender=sys.argv[1]
-password=sys.argv[2]
+
 msg=f"Thank You For Participating in {event}. Please find your certificate attatched to this mail."
 
 context = ssl.create_default_context()
-if("-d" not in sys.argv[3:]):
+if("-d" not in sys.argv):
+    sender=sys.argv[1]
+    password=sys.argv[2]
     server=smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) 
     server.login(sender, password)
 else:
+    sender="Test"
     server=smtplib.SMTP("localhost",port=1025)
 #syntax: python3 ownAuto.py <gmail> <pass> [options]
 #-v verbose
@@ -27,7 +29,7 @@ else:
     
 
 def main():
-    if("-d" not in sys.argv[3:]):
+    if("-d" not in sys.argv ):
         df=pd.read_csv('participants.csv')
         name_list=list(df['name'])
         email_list=list(df['email'])
@@ -45,12 +47,12 @@ def maillto(address,filename,name):
     
     message=attachMsg(name,address)
 
-    if("-n" not in sys.argv[3:]):
+    if("-n" not in sys.argv):
         message.attach(attachFile(filename))
     
     text=message.as_string()
 
-    if("-v" in sys.argv[3:]):
+    if("-v" in sys.argv):
         print(text)
     
     

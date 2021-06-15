@@ -19,9 +19,11 @@ def saveCert(name,template='template.jpg',Certfont='Elegante.ttf',debug=False,pd
     
     if(pdf==True):     
         image.convert('RGB')
-        image.save(imageName+".pdf")
+        imageName+=".pdf"
+        image.save(imageName)
     else:
-        image.save(imageName+".jpg")
+        imageName+=".jpg"
+        image.save(imageName)
     
     if(debug==True):
         print("name:",name,"location:",location,"saved at:",imageName)
