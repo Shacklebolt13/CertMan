@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import pandas as pd
 import smtplib,ssl,sys
-from . import setLoc
+from . import locMan 
 
 
 eventSm="xyz"
@@ -59,7 +59,7 @@ def maillto(address,filename,name):
 
 
 def createPdf(name):
-    return setLoc.saveCert(name)
+    return locMan.saveCert(name)
 
 def attachMsg(name,address):
 
