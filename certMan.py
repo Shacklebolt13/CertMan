@@ -13,6 +13,7 @@ filedir="certs/"
 makePdf=True
 msg=f"Thank You For Participating in {event}. Please find your certificate attatched to this mail."
 debugServerPort=1025
+mailSub=f"Certificate For {event}"
 #--------------------------------------------------
 
 if("-d" not in sys.argv):
@@ -30,7 +31,10 @@ else:
 #-c custom input
 #-n no attatch file
     
-
+def capUp(name):
+    chunks=name.split(' ')
+    return " ".join(list(map(lambda x: x[0].upper()+x[1:],chunks)))
+    
 def main():
     if("-d" not in sys.argv ):
         df=pd.read_csv('participants.csv')
@@ -41,6 +45,7 @@ def main():
         email_list=['a@emai1.com','b@email.com','c@email.com']
 
     for name,email in zip(name_list,email_list):
+        name=capUp(name)
         filename=createPdf(name)
         maillto(email,filename,name)
 
@@ -73,7 +78,7 @@ def attachMsg(name,address):
     message = MIMEMultipart()
     message["From"] = sender
     message["To"] = address
-    message["Subject"] = f"Certificate For {event}"
+    message["Subject"] = mailSub
 
     finalmsg=f"Hi {name},\n"+msg
     

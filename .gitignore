@@ -1,4 +1,5 @@
-certs
+certs/*
 *.csv
 __pycache__
 credentials.txt
+creds.txt
