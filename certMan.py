@@ -36,7 +36,7 @@ def capUp(name):
     return " ".join(list(map(lambda x: x[0].upper()+x[1:],chunks)))
     
 def main():
-    if("-d" not in sys.argv ):
+    if("-c" not in sys.argv ):
         df=pd.read_csv('participants.csv')
         name_list=list(df['name'])
         email_list=list(df['email'])
