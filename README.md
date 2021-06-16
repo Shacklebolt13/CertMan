@@ -20,9 +20,8 @@ Post Certificates and send mails using gmail smtp
    <dt>-n</dt>
    <dd> no file upload, only post message</dd>
  </dl>
-
+<h4>usage:</h4>
 <ul>  
-usage:
 <li>clone the repo</li>
 <li>run locMan.py with your certificate template as template.jpg</li>
 <li>confirm location of the drawn text or change the location(x,y)</li>

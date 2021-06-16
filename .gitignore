@@ -1,5 +1,8 @@
 certs/*
 *.csv
 __pycache__
+<<<<<<< HEAD
 credentials.txt
 creds.txt
+=======
+>>>>>>> 8653e30563a4c03f92ba3f3dedda034ed7459e5b
