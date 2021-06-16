@@ -1,3 +1,4 @@
 certs
 *.csv
 __pycache__
+credentials.txt
