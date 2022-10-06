@@ -3,8 +3,11 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import pandas as pd
-import smtplib, ssl, sys
+import smtplib
+import ssl
+import sys
 import locMan
+import argparse
 
 # ----------------- TO CUSTOMIZE-------------------
 eventSm = " "  # for files
@@ -14,12 +17,28 @@ makePdf = True
 msg = f"Thank You For Participating in {event}. Please find your certificate attatched to this mail."
 debugServerPort = 1025
 mailSub = f"Badhiyaan Ji"
+# Instantiate the parser
+parser = argparse.ArgumentParser(
+    description="Post certificate and send mail using gmail smtp")
+parser.add_argument('sender', metavar='',
+                    help='Sender mail ID is required')
+parser.add_argument('password', metavar='',
+                    help='Sender password is required')
+group = parser.add_mutually_exclusive_group()
+group.add_argument('-d', '--debug', action='store_true', help='Enable debug')
+group.add_argument('-v', '--verbose', action='store_true',
+                   help='Enable verbose')
+group.add_argument('-c', '--custom', action='store_true',
+                   help='Enable custom input')
+group.add_argument('-n', '--nofile', action='store_true',
+                   help='Enable no file')
+args = parser.parse_args()
 # --------------------------------------------------
 
-if "-d" not in sys.argv:
+if args.debug:
     context = ssl.create_default_context()
-    sender = sys.argv[1]
-    password = sys.argv[2]
+    sender = args.sender
+    password = args.password
     server = smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context)
     print(sender, password)
     server.login(sender, password)
@@ -39,14 +58,14 @@ def capUp(name):
 
 
 def main():
-    if "-c" not in sys.argv:
+    if args.verbose:
         df = pd.read_excel("participants.xlsx")
         name_list = list(df["name"])
         email_list = list(df["mail"])
         for *i, coun in zip(name_list, email_list, range(1, 100000)):
             print(i, coun)
     else:
-        name_list = ["p1", "p2", "p3"]  #  list(df['name'])
+        name_list = ["p1", "p2", "p3"]  # list(df['name'])
         email_list = ["a@emai1.com", "b@email.com", "c@email.com"]
 
     for name, email in zip(name_list, email_list):
@@ -59,19 +78,19 @@ def maillto(address, filename, name):
 
     message = attachMsg(name, address)
 
-    if "-n" not in sys.argv:
+    if args.nofile:
         message.attach(attachFile(filename))
 
     text = message.as_string()
 
-    if "-v" in sys.argv:
+    if args.verbose:
         print(text)
 
     server.sendmail(sender, address, text)
 
 
 def createPdf(name):
-    debugMode = True if ("-v" in sys.argv) else False
+    debugMode = args.verbose
 
     return locMan.saveCert(name, debug=debugMode, pdf=makePdf)
 
